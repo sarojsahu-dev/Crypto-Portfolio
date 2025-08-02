@@ -10,6 +10,9 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
+val TintSelected = Color(0xFFE1E1E1)
+val TintUnselected = Color(0xFFAFAFAF)
+
 // Primary Colors
 val PrimaryBlue = Color(0xFF4C6EF5)
 val PrimaryBlueDark = Color(0xFF364FC7)

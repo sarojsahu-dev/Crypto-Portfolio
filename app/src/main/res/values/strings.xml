@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Crypto Portfolio</string>
+
+    <!-- Bottom Navigation -->
+    <string name="analytics">Analytics</string>
+    <string name="exchange">Exchange</string>
+    <string name="record">Record</string>
+    <string name="wallet">Wallet</string>
 </resources>
