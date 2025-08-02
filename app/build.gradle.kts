@@ -55,9 +55,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // Navigation
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.material3.navigation)
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.androidx.material)
+    implementation(libs.accompanist.systemuicontroller)
 
     // Hilt
     implementation(libs.hilt.android)
@@ -70,7 +72,6 @@ dependencies {
 
     // System UI
     implementation(libs.androidx.core.splashscreen)
-    implementation(libs.accompanist.systemuicontroller)
 
     // Testing
     testImplementation(libs.junit)

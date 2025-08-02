@@ -15,11 +15,6 @@ activityCompose = "1.9.1"
 
 # Compose BOM & Compiler
 composeBom = "2024.08.00"
-composeCompiler = "1.5.14"
-
-# Navigation
-navigation = "2.7.7"
-kotlinxSerialization = "1.7.1"
 
 # Dependency Injection
 hilt = "2.51.1"
@@ -28,7 +23,10 @@ ksp = "2.0.0-1.0.23"
 
 # UI & System
 splashscreen = "1.0.1"
-systemuicontroller = "0.34.0"
+accompanistSystemuicontroller = "0.27.0"
+materialVersion = "1.8.2"
+kotlinxSerializationJson = "1.8.0"
+material3Navigation = "1.0.1"
 
 [libraries]
 # Core Android Libraries
@@ -50,10 +48,6 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 # Material Design
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
-# Navigation
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
-
 # Hilt Dependency Injection
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
@@ -65,12 +59,16 @@ androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lif
 
 # System UI & Splash Screen
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "systemuicontroller" }
 
 # Testing Libraries
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+material3-navigation = { group = "io.github.stefanoq21", name = "material3-navigation", version.ref = "material3Navigation" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 
 [plugins]
 # Core Plugins
