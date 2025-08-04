@@ -156,6 +156,75 @@ UI State ←── ViewModel ←── Domain Model ←── Data ←───�
 - **Smooth Animations**: Polished user interactions
 - **Accessibility**: Full screen reader and navigation support
 
+### Current Limitations
+
+**Performance**
+- Large portfolio datasets may cause UI lag during initial load
+- Real-time price updates can be resource-intensive on older devices
+- Image loading for cryptocurrency icons needs optimization
+
+**Data & Sync**
+- Offline support is limited - requires internet connection for most features
+- No data backup/restore functionality across devices
+- Cache management needs improvement for better offline experience
+
+**UI/UX**
+- Limited tablet and foldable device optimization
+- Some animations may stutter on lower-end devices
+- Pull-to-refresh gesture not implemented on all screens
+- Dark theme implementation needs refinement
+
+**Security**
+- No biometric authentication for sensitive operations
+- Transaction data lacks encryption at rest
+
+**Testing**
+- UI test coverage is incomplete (~60% coverage)
+- Integration tests for repository layer need expansion
+- Performance testing not implemented
+
+### Planned Improvements
+
+**Short Term**
+- [ ] Implement offline-first architecture with Room database
+- [ ] Add biometric authentication
+- [ ] Optimize image loading with Coil caching
+- [ ] Improve error handling and user feedback
+- [ ] Add pull-to-refresh on all screens
+
+**Medium Term**
+- [ ] Implement data export/import functionality
+- [ ] Add comprehensive tablet layout support
+- [ ] Integrate push notifications for price alerts
+- [ ] Implement advanced portfolio analytics
+- [ ] Add multi-language support (i18n)
+- [ ] Implement proper CI/CD pipeline
+
+****
+- [ ] Widget support for home screen
+- [ ] Advanced charting with custom indicators
+- [ ] Social features (portfolio sharing)
+- [ ] AI-powered investment insights
+- [ ] Integration with hardware wallets
+- [ ] Wear OS companion app
+
+### Performance Considerations
+
+**Memory Usage**
+- Large image assets should be optimized
+- Implement proper list recycling for large datasets
+- Consider pagination for transaction history
+
+**Network Efficiency**
+- Implement request caching strategy
+- Add network request deduplication
+- Optimize API call frequency
+
+**Battery Optimization**
+- Reduce background processing
+- Implement smart refresh intervals
+- Optimize location services usage (if any)
+
 ## Used
 
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) for modern UI toolkit
