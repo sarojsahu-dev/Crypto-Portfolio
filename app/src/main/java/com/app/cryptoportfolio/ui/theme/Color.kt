@@ -14,12 +14,12 @@ val TintSelected = Color(0xFFE1E1E1)
 val TintUnselected = Color(0xFFAFAFAF)
 
 // Primary Colors
-val PrimaryBlue = Color(0xFF4C6EF5)
+val PrimaryBlue = Color(0xFF222DEC)
 val PrimaryBlueDark = Color(0xFF364FC7)
 val PrimaryBlueLight = Color(0xFF748FFC)
 
 // Background Colors
-val BackgroundDark = Color(0xFF1A1B23)
+val BackgroundDark = Color(0xA30B0B0B)
 val BackgroundCard = Color(0xFF2D2E3F)
 val BackgroundSheet = Color(0xFF1E1F28)
 

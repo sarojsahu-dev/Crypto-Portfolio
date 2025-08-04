@@ -24,7 +24,7 @@ data object WalletRoute
 enum class TopLevelDestination(
     @DrawableRes val selectedIcon: Int,
     @StringRes val titleTextId: Int,
-    val route: KClass<*>
+    val route: KClass<*>,
 ) {
     Analytics(
         selectedIcon = R.drawable.ic_analytics_filled,

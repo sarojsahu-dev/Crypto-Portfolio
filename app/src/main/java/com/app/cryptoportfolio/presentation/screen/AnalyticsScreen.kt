@@ -7,12 +7,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,9 +26,13 @@ import com.app.cryptoportfolio.domain.model.CryptoHolding
 import com.app.cryptoportfolio.domain.model.Cryptocurrency
 import com.app.cryptoportfolio.domain.model.Portfolio
 import com.app.cryptoportfolio.domain.model.PriceChart
+import com.app.cryptoportfolio.presentation.components.CryptoCard
 import com.app.cryptoportfolio.presentation.components.ErrorMessage
 import com.app.cryptoportfolio.presentation.components.LoadingIndicator
+import com.app.cryptoportfolio.presentation.components.PriceChartCard
 import com.app.cryptoportfolio.presentation.components.PriceChartComponent
+import com.app.cryptoportfolio.presentation.components.TimeFrame
+import com.app.cryptoportfolio.presentation.components.TopBarWithPortfolioValue
 import com.app.cryptoportfolio.presentation.state.UiState
 import com.app.cryptoportfolio.presentation.viewmodel.AnalyticsViewModel
 import com.app.cryptoportfolio.ui.theme.Accent
@@ -41,6 +49,7 @@ import com.app.cryptoportfolio.ui.theme.SurfaceVariant
 import com.app.cryptoportfolio.ui.theme.TextPrimary
 import com.app.cryptoportfolio.ui.theme.TextSecondary
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnalyticsScreen(
     modifier: Modifier = Modifier,
@@ -48,35 +57,48 @@ fun AnalyticsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(BackgroundDark)
-    ) {
-        when (val portfolioState = uiState.portfolio) {
-            is UiState.Loading -> {
-                LoadingIndicator(
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-            is UiState.Error -> {
-                ErrorMessage(
-                    message = portfolioState.message,
-                    onRetry = { viewModel.refresh() },
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-            is UiState.Success -> {
-                AnalyticsContent(
-                    portfolio = portfolioState.data,
-                    priceChart = uiState.priceChart,
-                    selectedTimeframe = uiState.selectedTimeframe,
-                    selectedCrypto = uiState.selectedCrypto,
-                    onTimeframeSelected = viewModel::selectTimeframe,
-                    onCryptoSelected = viewModel::selectCrypto,
-                    formatCurrency = viewModel::formatCurrency,
-                    getTimeframeDisplayName = viewModel::getTimeframeDisplayName
-                )
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = Color(0xFF08080a),
+        topBar = {
+            TopBarWithPortfolioValue(
+                modifier = Modifier.padding(horizontal = 9.dp),
+                portfolioValue = "₹1,57,342.05",
+                onMenuClick = { },
+                onNotificationClick = { }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            when (val portfolioState = uiState.portfolio) {
+                is UiState.Loading -> {
+                    LoadingIndicator(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                is UiState.Error -> {
+                    ErrorMessage(
+                        message = portfolioState.message,
+                        onRetry = { viewModel.refresh() },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                is UiState.Success -> {
+                    AnalyticsContent(
+                        portfolio = portfolioState.data,
+                        priceChart = uiState.priceChart,
+                        selectedTimeframe = uiState.selectedTimeframe,
+                        selectedCrypto = uiState.selectedCrypto,
+                        onTimeframeSelected = viewModel::selectTimeframe,
+                        onCryptoSelected = viewModel::selectCrypto,
+                        formatCurrency = viewModel::formatCurrency,
+                        getTimeframeDisplayName = viewModel::getTimeframeDisplayName
+                    )
+                }
             }
         }
     }
@@ -99,41 +121,6 @@ private fun AnalyticsContent(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            PortfolioOverviewCard(
-                portfolio = portfolio,
-                formatCurrency = formatCurrency
-            )
-        }
-
-        item {
-            Text(
-                text = "Select Cryptocurrency",
-                style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(portfolio.holdings) { holding ->
-                    CryptoSelectionChip(
-                        crypto = holding.cryptocurrency,
-                        isSelected = selectedCrypto == holding.cryptocurrency.id,
-                        onSelected = { onCryptoSelected(holding.cryptocurrency.id) }
-                    )
-                }
-            }
-        }
-
-        item {
-            Text(
-                text = "Price Chart",
-                style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary,
-                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-            )
-
             when (priceChart) {
                 is UiState.Loading -> {
                     LoadingIndicator(
@@ -153,31 +140,32 @@ private fun AnalyticsContent(
                 }
                 is UiState.Success -> {
                     PriceChartCard(
-                        priceChart = priceChart.data,
-                        selectedTimeframe = selectedTimeframe,
-                        onTimeframeSelected = onTimeframeSelected,
-                        formatCurrency = formatCurrency,
-                        getTimeframeDisplayName = getTimeframeDisplayName
+                        priceChart = emptyList(),
+                        selectedTimeframe = TimeFrame.MONTH,
+                        onTimeframeSelected = {},
+                        formatCurrency = { "₹ ${it.toInt()}" },
+                        getTimeframeDisplayName = { it.name }
                     )
                 }
             }
         }
 
         item {
-            Text(
-                text = "Holdings Breakdown",
-                style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary,
-                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-            )
-        }
-
-        items(portfolio.holdings) { holding ->
-            HoldingBreakdownItem(
-                holding = holding,
-                totalPortfolioValue = portfolio.totalValue,
-                formatCurrency = formatCurrency
-            )
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                items(4) {
+                    CryptoCard(
+                        cryptoName = "Bitcoin (BTC)",
+                        symbol = "BTC",
+                        amount = "₹ 75,62,502.14",
+                        percentage = "+3.2%",
+                        isPositive = true,
+                        iconText = "₿",
+                        iconBgColor = Color(0xFFF7931A)
+                    )
+                }
+            }
         }
     }
 }
@@ -282,91 +270,6 @@ private fun CryptoSelectionChip(
             selectedLabelColor = TextPrimary
         )
     )
-}
-
-@Composable
-private fun PriceChartCard(
-    priceChart: PriceChart,
-    selectedTimeframe: ChartTimeframe,
-    onTimeframeSelected: (ChartTimeframe) -> Unit,
-    formatCurrency: (java.math.BigDecimal, String) -> String,
-    getTimeframeDisplayName: (ChartTimeframe) -> String
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = SurfaceCard
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = priceChart.cryptocurrency.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = TextPrimary,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Text(
-                        text = formatCurrency(priceChart.cryptocurrency.currentPrice, "INR"),
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = TextPrimary,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Text(
-                    text = "${if (priceChart.cryptocurrency.priceChangePercentage24h >= 0) "+" else ""}${String.format("%.2f", priceChart.cryptocurrency.priceChangePercentage24h)}%",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = if (priceChart.cryptocurrency.priceChangePercentage24h >= 0) GreenSuccess else RedError,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            PriceChartComponent(
-                dataPoints = priceChart.dataPoints,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Timeframe Selection
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(ChartTimeframe.values()) { timeframe ->
-                    FilterChip(
-                        onClick = { onTimeframeSelected(timeframe) },
-                        label = {
-                            Text(
-                                text = getTimeframeDisplayName(timeframe),
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                        },
-                        selected = selectedTimeframe == timeframe,
-                        colors = FilterChipDefaults.filterChipColors(
-                            containerColor = if (selectedTimeframe == timeframe) PrimaryBlue else SurfaceVariant,
-                            labelColor = if (selectedTimeframe == timeframe) TextPrimary else TextSecondary,
-                            selectedContainerColor = PrimaryBlue,
-                            selectedLabelColor = TextPrimary
-                        )
-                    )
-                }
-            }
-        }
-    }
 }
 
 @Composable
